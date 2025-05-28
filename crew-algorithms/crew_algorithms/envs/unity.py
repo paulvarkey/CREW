@@ -297,7 +297,7 @@ class UnityWrapper(_EnvWrapper):
 
         missing_agents = set(range(self.num_agents)) - seen_agent_ids
         for missing_agent in missing_agents:
-            # print(self.done_spec, missing_agent)
+            print(self.done_spec, missing_agent)
             agent_td = TensorDict(
                 source={
                     "observation": self.observation_spec["agents", "observation"][
@@ -374,7 +374,7 @@ class UnityEnv(UnityWrapper):
         file_name: str | None = None,
         seed: int = 0,
         no_graphics: bool = False,
-        timeout_wait: int = 60,
+        timeout_wait: int = 500,
         side_channels: list[SideChannel] | None = None,
         log_folder: str | None = None,
         **kwargs,
@@ -396,7 +396,7 @@ class UnityEnv(UnityWrapper):
         file_name: str | None = None,
         seed: int = 0,
         no_graphics: bool = False,
-        timeout_wait: int = 60,
+        timeout_wait: int = 500,
         side_channels: list[SideChannel] | None = None,
         log_folder: str | None = None,
         **env_kwargs,
