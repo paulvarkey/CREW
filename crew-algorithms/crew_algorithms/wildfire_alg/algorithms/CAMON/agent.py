@@ -135,7 +135,7 @@ class Agent:
             f"Here are your observations: \n\n{obs_string}\n\n"
             f"Create a detailed text summary of all relevant information, such as location, surroundings, presence of fire and civilians, etc. Speak only in first person as AGENT_{self.id}. "
         )
-        print(self.api_key)
+
         client = OpenAI(api_key=self.api_key)
         response = client.chat.completions.create(
             model="gpt-4o",

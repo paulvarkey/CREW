@@ -421,6 +421,7 @@ def generate_action_from_option(agent):
         # Default action libraries
 
         try:
+
             action_libraries = {
                     0: Run_Firefighter_Option,  # Firefighter
                     1: Run_Bulldozer_Option,    # Bulldozer
@@ -430,6 +431,7 @@ def generate_action_from_option(agent):
             # Generate queue of actions for the option
             if agent.type in action_libraries:
                 action_libraries[agent.type](agent, current_option)
+                
 
             else:
                 raise ValueError(f"No action library defined for agent type {agent.type}")

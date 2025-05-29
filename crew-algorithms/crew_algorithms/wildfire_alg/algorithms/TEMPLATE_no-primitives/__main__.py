@@ -10,7 +10,7 @@ import numpy as np
 from crew_algorithms.wildfire_alg.core.alg_utils import get_agent_observations, generate_action_from_option, parse_game_data, check_if_option_done, check_game_done
 import datetime
 import csv
-
+import certifi
 
 
 
@@ -96,7 +96,8 @@ def wildfire_alg(cfg: Config):
 
     os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
     api_key = os.environ['OPENAI_API_KEY']
-    path = os.path.join("crew-algorithms\crew_algorithms\wildfire_alg\outputs\logs\TEMPLATE_primitives", level, str(seed), cfg.envs.timestamp)
+    os.environ["SSL_CERT_FILE"] = certifi.where()
+    path = os.path.join("outputs\logs\TEMPLATE_no-primitives", level, str(seed), cfg.envs.timestamp)
     os.makedirs(path, exist_ok=True)
 
     

@@ -119,7 +119,7 @@ namespace Examples.Wildfire
 			mapSize.x = ConfigReader.map_size;
 			mapSize.y = ConfigReader.map_size;
 			//meshHeightMultiplier = 6;
-			meshHeightMultiplier = 20f;
+			meshHeightMultiplier = 6f;
 			Connection = FindObjectOfType<DojoConnection>();
 			// Higher constant -> Less influence
 			moisture_constant = 10;

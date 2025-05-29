@@ -1,4 +1,11 @@
 python algorithms\\CAMON\\__main__.py envs.level=Level_1_small envs.seed=483  envs.max_steps=20
+#python algorithms\\COELA\\__main__.py envs.level=Level_1_small envs.seed=483  envs.max_steps=20 &
+#python algorithms\\Embodied\\__main__.py envs.level=Level_1_small envs.seed=483  envs.max_steps=20 &
+#python algorithms\\HMAS_2\\__main__.py envs.level=Level_1_small envs.seed=483  envs.max_steps=20 &
+
+
+
+
 
 #python crew-algorithms\\crew_algorithms\\wildfire_alg\\algorithms\\CAMON\\__main__.py envs.level=Level_1_small envs.seed=483  envs.max_steps=20
 

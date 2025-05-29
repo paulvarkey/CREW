@@ -15,7 +15,7 @@ from crew_algorithms.wildfire_alg.libraries.firefighter_action_library import Ru
 from crew_algorithms.wildfire_alg.libraries.bulldozer_action_library import Run_Bulldozer_Action
 from crew_algorithms.wildfire_alg.libraries.drone_action_library import Run_Drone_Action
 from crew_algorithms.wildfire_alg.libraries.helicopter_action_library import Run_Helicopter_Action
-
+import certifi
 
 @define(auto_attribs=True)
 class Config:
@@ -86,14 +86,16 @@ def wildfire_alg(cfg: Config):
 
 
     update_config(preset=levels[level], config=cfg.envs, log_trajectory=True, seed=seed)
+    cfg.envs.timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     env = make_env(cfg.envs, toggle_timestep_channel, device)
     state = env.reset()
 
     os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
     api_key = os.environ['OPENAI_API_KEY']
-    path = os.path.join("crew-algorithms\crew_algorithms\wildfire_alg\outputs\logs\HMAS_2", level, str(seed), datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
-    os.makedirs(path, exist_ok=True)
     
+    path = os.path.join("outputs\logs\HMAS_2", level, str(seed), cfg.envs.timestamp)
+    os.makedirs(path, exist_ok=True)
+    os.environ["SSL_CERT_FILE"] = certifi.where()
     
     agents = []
     game_data = parse_game_data(state, cfg)

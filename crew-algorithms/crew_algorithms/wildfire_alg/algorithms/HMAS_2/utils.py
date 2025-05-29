@@ -50,7 +50,7 @@ def translate_action(action_str: str, type: int, global_data: dict) -> Action:
         type_string = 'helicopter'
 
     prompt_path = os.path.join(
-        'crew-algorithms', 'crew_algorithms', 'wildfire_alg', 'algorithms',
+        'algorithms',
         'HMAS_2', 'prompts', 'translator', f'{type_string}_translator.txt'
     )
     with open(prompt_path, 'r', encoding='utf-8') as file:
@@ -136,8 +136,7 @@ def propose_actions(global_data: dict, past_conversation:list):
             
 
             desc_path = os.path.join(
-                'crew-algorithms', 'crew_algorithms', 'wildfire_alg', 'algorithms',
-                'HMAS_2', 'prompts', 'descriptions', f'{type_string.lower()}_description.txt'
+                'algorithms','HMAS_2', 'prompts', 'descriptions', f'{type_string.lower()}_description.txt'
             )
             with open(desc_path, 'r', encoding='utf-8') as file:
                 abilities_string = file.read()
@@ -274,8 +273,7 @@ def provide_feedback(agent: Agent, global_data:dict, proposed_actions:dict):
             type_string = 'helicopter'
 
         desc_path = os.path.join(
-                'crew-algorithms', 'crew_algorithms', 'wildfire_alg', 'algorithms',
-                'HMAS_2', 'prompts', 'descriptions', f'{type_string.lower()}_description.txt'
+                'algorithms', 'HMAS_2', 'prompts', 'descriptions', f'{type_string.lower()}_description.txt'
             )
         with open(desc_path, 'r', encoding='utf-8') as file:
             abilities_string = file.read()

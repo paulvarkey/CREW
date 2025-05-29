@@ -54,7 +54,7 @@ def translate_action(action_str: str, type: int, global_data: dict) -> Action:
         type_string = 'helicopter'
 
     prompt_path = os.path.join(
-        'crew-algorithms', 'crew_algorithms', 'wildfire_alg', 'algorithms',
+        'algorithms',
         'Embodied', 'prompts', 'translator', f'{type_string}_translator.txt'
     )
     with open(prompt_path, 'r', encoding='utf-8') as file:
@@ -253,7 +253,7 @@ def action_round(agent: Agent, global_data: dict):
         chat_string += "\n---\n\n"
 
     desc_path = os.path.join(
-        'crew-algorithms', 'crew_algorithms', 'wildfire_alg', 'algorithms',
+        'algorithms',
         'Embodied', 'prompts', 'descriptions', f'{type_string.lower()}_description.txt'
     )
     with open(desc_path, 'r', encoding='utf-8') as file:

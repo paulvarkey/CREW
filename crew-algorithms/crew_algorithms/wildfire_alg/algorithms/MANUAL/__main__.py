@@ -10,6 +10,9 @@ import numpy as np
 from crew_algorithms.wildfire_alg.core.alg_utils import get_agent_observations, parse_game_data, check_game_done
 import datetime
 import csv
+import certifi
+import os
+
 from crew_algorithms.wildfire_alg.libraries.firefighter_action_library import Run_Firefighter_Action
 from crew_algorithms.wildfire_alg.libraries.bulldozer_action_library import Run_Bulldozer_Action
 from crew_algorithms.wildfire_alg.libraries.drone_action_library import Run_Drone_Action
@@ -94,12 +97,15 @@ def wildfire_alg(cfg: Config):
 
     update_config(preset=levels[level], config=cfg.envs, log_trajectory=True, seed=seed)
 
+    cfg.envs.timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")  
     env = make_env(cfg.envs, toggle_timestep_channel, device)
     state = env.reset()
 
     os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+    os.environ["SSL_CERT_FILE"] = certifi.where()
     api_key = os.environ['OPENAI_API_KEY']
-    path = os.path.join("crew-algorithms\crew_algorithms\wildfire_alg\output\logs\MANUAL", level, str(seed), datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+    
+    path = os.path.join("outputs\logs\MANUAL", level, str(seed), cfg.envs.timestamp)
     os.makedirs(path, exist_ok=True)
 
     
@@ -182,7 +188,7 @@ def wildfire_alg(cfg: Config):
                 print("3. Pick up civilian")
                 print("4. Drop off civilian")
                 print("5. Spray water")
-                print("6. Refill water")
+                print("6. Refill water")    
                 print("0. Do nothing")
                 
             elif agent.type == 1:  # Bulldozer

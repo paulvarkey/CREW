@@ -48,7 +48,7 @@ def translate_action(option_str: str, type: int, global_data: dict) -> Action:
     else:
         type_string = 'helicopter'
     # Load prompt
-    prompt_path = f'crew-algorithms/crew_algorithms/wildfire_alg/algorithms/CAMON/prompts/translator/{type_string}_translator.txt'
+    prompt_path = f'algorithms/CAMON/prompts/translator/{type_string}_translator.txt'
     with open(prompt_path, 'r', encoding='utf-8') as f:
         prompt = f.read().replace("ACTION", option_str)
     # Call OpenAI
@@ -130,7 +130,7 @@ def generate_plan(agent: Agent, global_data: dict) -> None:
 
         if global_data.get(kind+'s'):
 
-            path = f'crew-algorithms/crew_algorithms/wildfire_alg/algorithms/CAMON/prompts/descriptions/{kind}_description.txt'
+            path = f'algorithms/CAMON/prompts/descriptions/{kind}_description.txt'
             with open(path, 'r', encoding='utf-8') as f:
                 team_abilities += f.read()
 
@@ -269,7 +269,7 @@ def propose_plan(agent: Agent, global_data: dict) -> None:
     chat_string = ''.join(f"{time}: \n{msg}\n\n" for time, msg in agent.chat_history.items())
 
     # Description prompt
-    desc_path = f'crew-algorithms/crew_algorithms/wildfire_alg/algorithms/CAMON/prompts/descriptions/{type_string.lower()}_description.txt'
+    desc_path = f'algorithms/CAMON/prompts/descriptions/{type_string.lower()}_description.txt'
     with open(desc_path, 'r', encoding='utf-8') as f:
         description_string = f.read()
 
@@ -345,7 +345,7 @@ def propose_plan(agent: Agent, global_data: dict) -> None:
 
         if global_data.get(kind+'s'):
 
-            path = f'crew-algorithms/crew_algorithms/wildfire_alg/algorithms/CAMON/prompts/descriptions/{kind}_description.txt'
+            path = f'algorithms/CAMON/prompts/descriptions/{kind}_description.txt'
             with open(path, 'r', encoding='utf-8') as f:
                 team_abilities += f.read()
 

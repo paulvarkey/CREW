@@ -94,7 +94,7 @@ namespace DojoEditor
         // refer to: https://github.com/game-ci/documentation/blob/main/example/BuildScript.cs
         private void BuildAll()
         {
-            UnityEditor.OSXStandalone.UserBuildSettings.architecture = UnityEditor.OSXStandalone.MacOSArchitecture.x64ARM64;
+            //UnityEditor.OSXStandalone.UserBuildSettings.architecture = UnityEditor.OSXStandalone.MacOSArchitecture.x64ARM64;
 
             Configs.ForEach(c =>
             {

@@ -2,6 +2,7 @@ from openai import OpenAI
 import os
 from pydantic import BaseModel
 import numpy as np
+import certifi
 
 
 
@@ -52,7 +53,7 @@ class AdaptiveOptions(BaseModel):
 
 
 
-
+os.environ["SSL_CERT_FILE"] = certifi.where()
 
 api_key = os.environ['OPENAI_API_KEY']
 client = OpenAI(api_key=api_key)
