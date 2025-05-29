@@ -1,30 +1,6 @@
 import torch
-import numpy
-import os
-import uuid
-
-
-#from crew_algorithms.wildfire_alg.core.gpt import request, critique_response,regenerate_response, request_options, translate_options
 import numpy as np
-from crew_algorithms.wildfire_alg.libraries.firefighter_option_library import Run_Firefighter_Option
-from crew_algorithms.wildfire_alg.libraries.bulldozer_option_library import Run_Bulldozer_Option
-from crew_algorithms.wildfire_alg.libraries.drone_option_library import Run_Drone_Option
-from crew_algorithms.wildfire_alg.libraries.helicopter_option_library import Run_Helicopter_Option
 from pydantic import BaseModel
-from typing import List
-
-from typing_extensions import Annotated
-from autogen_agentchat.agents import AssistantAgent
-from autogen_core import CancellationToken
-from autogen_core.tools import FunctionTool
-from autogen_agentchat.messages import TextMessage
-from autogen_agentchat.ui import Console
-from autogen_agentchat.teams import RoundRobinGroupChat
-from autogen_core.model_context import BufferedChatCompletionContext, ChatCompletionContext
-from autogen_agentchat.conditions import ExternalTermination, TextMentionTermination
-
-from autogen_ext.models.openai import OpenAIChatCompletionClient
-import asyncio
 
 
 class Action(BaseModel):
@@ -48,6 +24,10 @@ class Action(BaseModel):
         """
         print([self.type, self.param_1, self.param_2, self.description])
 
+from crew_algorithms.wildfire_alg.libraries.firefighter_option_library import Run_Firefighter_Option
+from crew_algorithms.wildfire_alg.libraries.bulldozer_option_library import Run_Bulldozer_Option
+from crew_algorithms.wildfire_alg.libraries.drone_option_library import Run_Drone_Option
+from crew_algorithms.wildfire_alg.libraries.helicopter_option_library import Run_Helicopter_Option
 
 def get_agent_observations(state, agent_index, device="cpu"):
     """

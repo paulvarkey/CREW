@@ -2,28 +2,28 @@
 
 [![license badge](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
 
-CREW-WILDFIRE is an open-source benchmark designed to evaluate LLM-based multi-agent Agentic AI systems in complex, dynamic, real-world tasks. Built atop the human-AI teaming CREW simulation platform, it provides procedurally generated wildfire response scenarios that test the limits of multi-agent coordination, communication, and planning under uncertainty.
+CREW-WILDFIRE is an open-source benchmark designed to evaluate LLM-based multi-agent Agentic AI systems in complex, dynamic, real-world tasks. Built on the human-AI teaming CREW simulation platform, it provides procedurally generated wildfire response scenarios that test the limits of multi-agent coordination, communication, and planning under uncertainty.
 
 ## Overview
 
 CREW-WILDFIRE addresses the gap in existing multi-agent benchmarks by offering:
 
-- Large-scale environments supporting 100+ agents
+- Large-scale environments supporting 2000+ agents
 - Heterogeneous agent types (drones, helicopters, bulldozers, firefighters)
 - Partial observability and stochastic dynamics
 - Long-horizon planning objectives
 - Both low-level control and high-level natural language interactions
-- Modular PERCEPTION and EXECUTION interfaces
 
-Through these features, researchers can evaluate and develop next-generation multi-agent Agentic AI frameworks in realistic disaster response scenarios.
+
+Through these features, researchers can evaluate and develop next-generation multi-agent Agentic AI frameworks in high scale and complex scenarios, bridging the gap between conceptual toy enviornments and real world problems.
 
 ## Implemented Algorithms
 
 CREW-WILDFIRE includes implementations of four state-of-the-art LLM-based multi-agent frameworks:
 
-* **CAMON**: A hybrid coordination system featuring dynamic leadership where task assignments and global updates are managed by a leader agent. Leadership roles can transfer through agent-initiated interactions, enabling flexible communication and delegation.
+* **CAMON**: A hybrid coordination system featuring dynamic leadership where task assignments and global updates are managed by a changing leader agent. Leadership, along with global data is passed through each agnet by agent-to-agent interactions.
 
-* **COELA**: A fully decentralized framework where agents independently propose information, evaluate communication necessity, and execute actions based on their generated plans.
+* **COELA**: A decentralized structure where each agent independently proposes information, evaluates the necessity of communication, and performs actions based on its generated plans.
 
 * **Embodied**: A decentralized system without leader agents, featuring alternating communication rounds that allow both broadcast and targeted message exchanges, followed by independent action planning.
 
@@ -35,7 +35,7 @@ These implementations showcase different approaches to multi-agent coordination,
 
 * **Procedural Environment Generation**: Dynamic creation of environments using Perlin noise textures for vegetation, elevation, moisture, settlement, and wind vector maps
 * **Heterogeneous Agent Support**: Multiple agent types with diverse capabilities
-* **Scalable Architecture**: Support for large-scale agent deployment (100+ agents)
+* **Scalable Architecture**: Support for large-scale agent deployment (2000+ agents)
 * **Flexible Interaction Modes**: Both low-level control primitives and natural language commands
 * **Comprehensive Evaluation**: Built-in metrics for assessing coordination, spatial reasoning, and plan adaptation
 * **LLM Integration**: Native support for implementing and testing LLM-based multi-agent frameworks
@@ -79,15 +79,14 @@ CREW-WILDFIRE is designed to accelerate progress in large-scale Agentic intellig
 1. Implement new LLM-based multi-agent frameworks
 2. Add novel evaluation metrics or scenarios
 3. Improve environment generation or simulation features
-4. Enhance documentation and examples
-5. Fix bugs or improve performance
+4. Fix bugs or improve performance
 
 Please follow these steps to contribute:
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch (`git checkout -b feature/Feature`)
+3. Commit your changes (`git commit -m 'Add some Feature'`)
+4. Push to the branch (`git push origin feature/Feature`)
 5. Open a Pull Request
 
 ### Coding Standards

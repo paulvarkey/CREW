@@ -10,7 +10,6 @@ import numpy as np
 from crew_algorithms.wildfire_alg.core.alg_utils import get_agent_observations, parse_game_data, check_game_done
 import datetime
 import csv
-from openai import OpenAI
 from crew_algorithms.wildfire_alg.libraries.firefighter_action_library import Run_Firefighter_Action
 from crew_algorithms.wildfire_alg.libraries.bulldozer_action_library import Run_Bulldozer_Action
 from crew_algorithms.wildfire_alg.libraries.drone_action_library import Run_Drone_Action

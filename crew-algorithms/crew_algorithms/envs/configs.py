@@ -47,7 +47,7 @@ class BowlingConfig(EnvironmentConfig):
         "../crew-dojo/Builds/Bowling-StandaloneOSX-Server/Unity"
     )
     unity_server_build_path_windows: Path = (
-        "hello"
+        "../crew-dojo/Builds/Bowling-StandaloneWindows-Server/Unity"
     )
     log_folder_path: Path = "../UnityLogs"
     human_delay_steps: int = 4
@@ -202,13 +202,13 @@ class WildfireConfig(EnvironmentConfig):
     starting_helicopter_agents: int = 0
     steps_per_decision: int =10
     unity_server_build_path_linux: Path = (
-        "../crew-dojo/Builds/Wildfire-StandaloneLinux64-Server/Unity.x86_64"
+        "../../../crew-dojo/Builds/Wildfire-StandaloneLinux64-Server/Unity.x86_64"
     )
     unity_server_build_path_osx: Path = (
-        "crew-dojo/Builds/Wildfire-StandaloneOSX-Server/Unity"
+        "../../../crew-dojo/Builds/Wildfire-StandaloneOSX-Server/Unity"
     )
     unity_server_build_path_windows: Path = (
-        "C:\Users\Jphyu\Documents\Lab\CREW-Wildfire\crew-dojo\Builds\Wildfire-StandaloneWindows-Server\Unity.exe"
+        "../../../crew-dojo/Builds/Wildfire-StandaloneWindows-Server/Unity.exe"
     )
     log_folder_path: Path = "../UnityLogs"
     render_folder_path: Path = Path(__file__).resolve().parent.parent

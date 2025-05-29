@@ -1,6 +1,3 @@
-import os
-import re
-from openai import OpenAI
 from crew_algorithms.wildfire_alg.algorithms.MANUAL.__main__ import Config
 from typing import List, Tuple, Dict
 
@@ -13,7 +10,6 @@ class Agent:
         path: str,
         current_task: str,
         api_key: str,
-        agent_count: int
     ) -> None:
         self.id = id
         self.type = type
