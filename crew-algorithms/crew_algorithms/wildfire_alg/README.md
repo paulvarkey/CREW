@@ -1,6 +1,5 @@
 # CREW-WILDFIRE
 
-[![license badge](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
 
 CREW-WILDFIRE is an open-source benchmark designed to evaluate LLM-based multi-agent Agentic AI systems in complex, dynamic, real-world tasks. Built on the human-AI teaming CREW simulation platform, it provides procedurally generated wildfire response scenarios that test the limits of multi-agent coordination, communication, and planning under uncertainty.
 
