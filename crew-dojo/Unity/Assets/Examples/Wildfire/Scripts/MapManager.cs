@@ -130,6 +130,10 @@ namespace Examples.Wildfire
 			watered = new HashSet<Cell>();
 			drying_time = 30;
 
+            if (ConfigReader.map_size % 2 == 0)
+            {
+				this.transform.position = new Vector3(0.5f, 0, -0.5f);
+            }
 
 
 			regions = new TerrainType[6]{
@@ -1001,6 +1005,12 @@ namespace Examples.Wildfire
             {
 				float topLeftX = (mapSize.x - 1) / -2f + 0.5f;
 				float topLeftZ = (mapSize.y - 1) / 2f - 0.5f;
+
+				if (ConfigReader.map_size % 2 == 0)
+				{
+					topLeftX += 0.5f;
+					topLeftZ -= 0.5f;
+				}
 				for (int i = 0; i < chunkSize; i++)
                 {
 					for (int j = 0; j< chunkSize; j++)
@@ -1053,6 +1063,11 @@ namespace Examples.Wildfire
 			int height = map.elevationMap.GetLength(1);
 			float topLeftX = (width - 1) / -2f+0.5f;
 			float topLeftZ = (height - 1) / 2f-0.5f;
+			if (ConfigReader.map_size % 2 == 0)
+			{
+				topLeftX -= 0.5f;
+				topLeftZ += 0.5f;
+			}
 			int meshSimplificationIncrement = (levelOfDetail == 0) ? 1 : levelOfDetail * 2;
 
 			int vertexIndex = 0;

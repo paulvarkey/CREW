@@ -1,7 +1,15 @@
 # CREW-WILDFIRE
 
+[![docs badge](https://img.shields.io/badge/docs-reference-blue.svg)](https://generalroboticslab.github.io/crew-docs/)
+
+[Project Website](http://www.generalroboticslab.com/CREW) | [Video](https://www.youtube.com/watch?v=RINSo3uI0dI) | [Paper](https://arxiv.org/abs/2408.00170)
 
 CREW-WILDFIRE is an open-source benchmark designed to evaluate LLM-based multi-agent Agentic AI systems in complex, dynamic, real-world tasks. Built on the human-AI teaming CREW simulation platform, it provides procedurally generated wildfire response scenarios that test the limits of multi-agent coordination, communication, and planning under uncertainty.
+
+# Authors
+[Jonathan Hyun](https://github.com/jphyun2019), [Nicholas Waytowich](https://nicholaswaytowich.com/), [Boyuan Chen](http://boyuanchen.com/).
+
+Duke University, [General Robotics Lab](http://generalroboticslab.com/)
 
 ## Overview
 
@@ -15,6 +23,26 @@ CREW-WILDFIRE addresses the gap in existing multi-agent benchmarks by offering:
 
 
 Through these features, researchers can evaluate and develop next-generation multi-agent Agentic AI frameworks in high scale and complex scenarios, bridging the gap between conceptual toy enviornments and real world problems.
+
+![crew teaser](assets/wildfire-teaser.png)
+
+
+UPDATE WHEN PUBLISHED
+# Citation
+```
+@inproceedings{zhang2024crew,
+  title={CREW: Facilitating Human-AI Teaming Research},
+  author={Zhang, Lingyu and Ji, Zhengran and Chen, Boyuan},
+  booktitle={Preprint},
+  year={2024}
+}  
+```
+
+# Documentation
+
+For quick examples to get started, API references, tutorials on how to run and develop algorithms and environments, please refer to our [documentation website](https://generalroboticslab.github.io/crew-docs/).
+
+
 
 ## Implemented Algorithms
 
@@ -51,10 +79,6 @@ These implementations showcase different approaches to multi-agent coordination,
 │   ├── manual/         # Manual control implementation
 │   └── template/       # Template for new algorithms
 │
-├── libraries/           # Action and option libraries
-│   ├── *_action_library.py  # Action definitions for different agents
-│   └── *_option_library.py  # Option definitions for different agents
-│
 ├── core/               # Core functionality
 │   ├── alg_utils.py   # Common algorithm utilities
 │   └── utils.py       # General utility functions
@@ -64,8 +88,12 @@ These implementations showcase different approaches to multi-agent coordination,
 │   └── configs.py     # Configuration definitions
 │
 ├── data/             # Data scripts
+|
+├── libraries/           # Action and option libraries
+│   ├── *_action_library.py  # Action definitions for different agents
+│   └── *_option_library.py  # Option definitions for different agents
 │
-└── outputs/          # All output files
+└── results/          # All output files
     ├── logs/         # All chat logs, scores, and screenshots
     ├── plots/        # Generated plots
     └── data/         # Output data files
@@ -95,21 +123,4 @@ Please follow these steps to contribute:
 - Add unit tests for new features
 - Update documentation as needed
 
-## License
 
-[PENDING LICENSE SELECTION]
-
-## Citation
-
-If you use CREW-WILDFIRE in your research, please cite our paper:
-
-[CITATION DETAILS PENDING]
-
-```bibtex
-@inproceedings{crew-wildfire2025,
-    title={CREW-WILDFIRE: A Benchmark for Large-Scale Multi-Agent Agentic AI in Disaster Response},
-    author={[Author Names]},
-    booktitle={39th Conference on Neural Information Processing Systems (NeurIPS 2025)},
-    year={2025}
-}
-``` 

@@ -11,6 +11,7 @@ from crew_algorithms.wildfire_alg.core.alg_utils import get_agent_observations, 
 import datetime
 import csv
 import certifi
+from crew_algorithms.wildfire_alg.data.render_logs import compile_split_screen_video
 
 
 
@@ -89,7 +90,7 @@ def wildfire_alg(cfg: Config):
     os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
     os.environ["SSL_CERT_FILE"] = certifi.where()
     api_key = os.environ['OPENAI_API_KEY']
-    path = os.path.join("outputs\logs\COELA", level, str(seed), cfg.envs.timestamp)
+    path = os.path.join("results\logs\COELA", level, str(seed), cfg.envs.timestamp)
     os.makedirs(path, exist_ok=True)
 
     
@@ -121,7 +122,7 @@ def wildfire_alg(cfg: Config):
     print("Agent Count: " + str(len(agents)))
 
     header = ["cumulative_score", "cumulative_api_calls","cumulative_input_tokens", "cumulative_output_tokens"]
-    csv_filename = os.path.join(path, f"action_reward.csv")
+    csv_filename = os.path.join(path, f"data.csv")
     with open(csv_filename, 'w', newline='') as f:
           writer = csv.writer(f)
           writer.writerow(header)
@@ -233,6 +234,7 @@ def wildfire_alg(cfg: Config):
 
     env.close()
     print("TEST COMPLETE")
+    compile_split_screen_video(path, os.path.join(path, "render.mp4"))
             
 
 if __name__ == "__main__":

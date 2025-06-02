@@ -71,7 +71,7 @@ namespace Examples.Wildfire
         {
 
             log_trajectory = false;
-            frames_per_capture = 10;
+            frames_per_capture = 5;
             ignition_chance = 1;
             false_fire_chance = 1;
             startframes = 0;
@@ -558,7 +558,7 @@ namespace Examples.Wildfire
                 {
                     Color c = original.GetPixel(x, y);
                     int baseX = x * upscaleFactor;
-                    int baseY = y * upscaleFactor;
+                    int baseY = (original.height - 1 - y) * upscaleFactor; // Flip Y coordinate
                     for (int dy = 0; dy < upscaleFactor; dy++)
                         for (int dx = 0; dx < upscaleFactor; dx++)
                             _highResCache.SetPixel(baseX + dx, baseY + dy, c);
@@ -639,21 +639,6 @@ namespace Examples.Wildfire
                     {
                         SaveRenders(frame / frames_per_capture);
                     }
-                    if (frame % (50 * tick_rate)== 0 && log_trajectory)
-                    {
-
-                        string folder = Path.Combine(
-                            ConfigReader.render_folder_path,
-                            $"wildfire_alg/outputs/logs/{ConfigReader.algorithm}/{ConfigReader.level}/{ConfigReader.seed}/{ConfigReader.timestamp}/Server_Map"
-                        );
-                        if (!Directory.Exists(folder))
-                            Directory.CreateDirectory(folder);
-
-                        string filename = Path.Combine(folder, $"capture_{frame}.png");
-
-                        // now this will reuse one big Texture2D and won't leak:
-                        SaveHighResTexture(mapManager.textureMap, 32, filename);
-                    }
                     CheckScore();
 
 
@@ -695,13 +680,24 @@ namespace Examples.Wildfire
 
         public void SaveRenders(int step)
         {
+            string folder = Path.Combine(
+                            ConfigReader.render_folder_path,
+                            $"wildfire_alg/results/logs/{ConfigReader.algorithm}/{ConfigReader.level}/{ConfigReader.seed}/{ConfigReader.timestamp}/Server_Map"
+                        );
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
+            string filename = Path.Combine(folder, $"capture_{step}.png");
+
+            // now this will reuse one big Texture2D and won't leak:
+            SaveHighResTexture(mapManager.textureMap, 32, filename);
             // --- 1) Server accumulative capture ---
             if (_serverCaptureTex == null)
                 _serverCaptureTex = new Texture2D(serverTexture.width, serverTexture.height, TextureFormat.RGB24, false);
 
             string baseFolder = Path.Combine(
                 ConfigReader.render_folder_path,
-                $"wildfire_alg/outputs/logs/{ConfigReader.algorithm}/{ConfigReader.level}/{ConfigReader.seed}/{ConfigReader.timestamp}"
+                $"wildfire_alg/results/logs/{ConfigReader.algorithm}/{ConfigReader.level}/{ConfigReader.seed}/{ConfigReader.timestamp}"
             );
             Debug.Log(baseFolder);
             CaptureTextureToFile(

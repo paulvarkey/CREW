@@ -11,6 +11,7 @@ from crew_algorithms.wildfire_alg.core.alg_utils import get_agent_observations, 
 import datetime
 import csv
 import certifi
+from crew_algorithms.wildfire_alg.data.render_logs import compile_split_screen_video
 
 
 @define(auto_attribs=True)
@@ -68,7 +69,6 @@ def wildfire_alg(cfg: Config):
     device = "cpu" if not torch.has_cuda else "cuda:0"
     toggle_timestep_channel = ToggleTimestepChannel(uuid.uuid4())
 
-
     cfg.envs.algorithm = 'TEMPLATE_primitives'
     
     level = cfg.envs.level
@@ -76,13 +76,11 @@ def wildfire_alg(cfg: Config):
 
     levels = create_level_presets()
 
-
     firefighters = levels[level].get("starting_firefighter_agents",0)
     bulldozers = levels[level].get("starting_bulldozer_agents",0)
     drones = levels[level].get("starting_drone_agents",0)
     helicopters = levels[level].get("starting_helicopter_agents",0)
     agent_count = firefighters + bulldozers + drones + helicopters
-
 
     update_config(preset=levels[level], config=cfg.envs, log_trajectory=True, seed=seed)
     cfg.envs.timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
@@ -92,7 +90,7 @@ def wildfire_alg(cfg: Config):
     os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
     os.environ["SSL_CERT_FILE"] = certifi.where()
     api_key = os.environ['OPENAI_API_KEY']
-    path = os.path.join("outputs\logs\TEMPLATE_primitives", level, str(seed), cfg.envs.timestamp)
+    path = os.path.join("results\logs\TEMPLATE_primitives", level, str(seed), cfg.envs.timestamp)
     os.makedirs(path, exist_ok=True)
 
     
@@ -122,13 +120,16 @@ def wildfire_alg(cfg: Config):
         "output_tokens": 0,
         "score": 0,
     })
+
     print("Agent Count: " + str(len(agents)))
 
     header = ["cumulative_score", "cumulative_api_calls","cumulative_input_tokens", "cumulative_output_tokens"]
-    csv_filename = os.path.join(path, f"action_reward.csv")
+    csv_filename = os.path.join(path, f"data.csv")
+
     with open(csv_filename, 'w', newline='') as f:
           writer = csv.writer(f)
           writer.writerow(header)
+
     f.close()
 
     print(f"Max Steps {cfg.envs.max_steps}")
@@ -152,6 +153,7 @@ def wildfire_alg(cfg: Config):
             writer.writerow([global_data['score'], global_data['api_calls'], global_data['input_tokens'], global_data['output_tokens']])
         f.close()
 
+        agent_states = {}
         for agent in agents:
 
             observations = get_agent_observations(state, agent.id)
@@ -173,6 +175,7 @@ def wildfire_alg(cfg: Config):
             agent.last_current_cell = observations["current_cell"]
             agent.map_range = observations["map_range"]
             agent.extra_variables = observations["extra_variables"]
+            agent_states.update({agent.id: agent.last_position})
             check_if_option_done(agent=agent)
 
 
@@ -189,17 +192,17 @@ def wildfire_alg(cfg: Config):
         if check_game_done(global_data=global_data, cfg= cfg.envs, past_score=past_score):
             break
 
+        for agent in agents:
+           agent.generate_perception(cfg.envs, agent_states, global_data)
 
-        # for agent in agents:
-           # agent.generate_perception(cfg.envs, agent_states, global_data)
-
-
-
-        #TODO: Implement the TEMPLATE_primitives algorithm
-
-        # Set agent.options to the text primitive to be taken
+        #TODO: Implement your algorithm below
 
 
+
+
+
+
+        # END Algorithm
 
         env_action = [[0,0,0] for _ in range(cfg.envs.num_agents)]
 
@@ -226,6 +229,7 @@ def wildfire_alg(cfg: Config):
 
     env.close()
     print("TEST COMPLETE")
+    compile_split_screen_video(path, os.path.join(path, "render.mp4"))
 
 if __name__ == "__main__":
 

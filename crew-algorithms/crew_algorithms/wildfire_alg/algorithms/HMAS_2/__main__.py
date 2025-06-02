@@ -16,6 +16,8 @@ from crew_algorithms.wildfire_alg.libraries.bulldozer_action_library import Run_
 from crew_algorithms.wildfire_alg.libraries.drone_action_library import Run_Drone_Action
 from crew_algorithms.wildfire_alg.libraries.helicopter_action_library import Run_Helicopter_Action
 import certifi
+from crew_algorithms.wildfire_alg.data.render_logs import compile_split_screen_video
+
 
 @define(auto_attribs=True)
 class Config:
@@ -93,7 +95,7 @@ def wildfire_alg(cfg: Config):
     os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
     api_key = os.environ['OPENAI_API_KEY']
     
-    path = os.path.join("outputs\logs\HMAS_2", level, str(seed), cfg.envs.timestamp)
+    path = os.path.join("results\logs\HMAS_2", level, str(seed), cfg.envs.timestamp)
     os.makedirs(path, exist_ok=True)
     os.environ["SSL_CERT_FILE"] = certifi.where()
     
@@ -124,7 +126,7 @@ def wildfire_alg(cfg: Config):
     })
     print("Agent Count: " + str(len(agents)))
     header = ["cumulative_score", "cumulative_api_calls","cumulative_input_tokens", "cumulative_output_tokens"]
-    csv_filename = os.path.join(path, f"action_reward.csv")
+    csv_filename = os.path.join(path, f"data.csv")
     with open(csv_filename, 'w', newline='') as f:
           writer = csv.writer(f)
           writer.writerow(header)
@@ -263,7 +265,7 @@ def wildfire_alg(cfg: Config):
         
     env.close()
     print("TEST COMPLETE")
-
+    compile_split_screen_video(path, os.path.join(path, "render.mp4"))
 
         
 

@@ -3,96 +3,96 @@ import json
 def create_level_presets():
     presets = {}
     
-    # Level 1
-    presets['Level_1_small'] = {
+    # Cut Trees: Sparse
+    presets['Cut_Trees_Sparse_small'] = {
         'game_type': 0, 'map_size': 30, 'lines': False, 'tree_count': 6, 'trees_per_line': 1,
         'starting_firefighter_agents': 3, 'known': True,
     }
-    presets['Level_1_large'] = {
+    presets['Cut_Trees_Sparse_large'] = {
         'game_type': 0, 'map_size': 60, 'lines': False, 'tree_count': 25, 'trees_per_line': 1,
         'starting_firefighter_agents': 10, 'known': True,
     }
     
-    # Level 2
-    presets['Level_2_small'] = {
+    # Cut Trees: Lines
+    presets['Cut_Trees_Lines_small'] = {
         'game_type': 0, 'map_size': 30, 'lines': True, 'tree_count': 2, 'trees_per_line': 5,
         'starting_firefighter_agents': 2, 'starting_bulldozer_agents': 1, 'vegetation_density_offset': 30, 'known': True,
     }
-    presets['Level_2_large'] = {
+    presets['Cut_Trees_Lines_large'] = {
         'game_type': 0, 'map_size': 60, 'lines': True, 'tree_count': 5, 'trees_per_line': 7,
         'starting_firefighter_agents': 4, 'starting_bulldozer_agents': 3, 'vegetation_density_offset': 30, 'known': True,
     }
     
-    # Level 3
-    presets['Level_3_small'] = {
-        'game_type': 1, 'map_size': 100, 'fire_spread_speed': 100,'known': False,
+    # Scout Fire
+    presets['Scout_Fire_small'] = {
+        'game_type': 1, 'map_size': 100, 'fire_spread_frequency': 100,'known': False,
         'starting_drone_agents': 3
     }
-    presets['Level_3_large'] = {
-        'game_type': 1, 'map_size': 250, 'fire_spread_speed': 300,'known': False,
+    presets['Scout_Fire_large'] = {
+        'game_type': 1, 'map_size': 250, 'fire_spread_frequency': 300,'known': False,
         'starting_drone_agents': 5
     }
     
-    # Level 4
-    presets['Level_4_small'] = {
+    # Transport Firefighters
+    presets['Transport_Firefighters_small'] = {
         'game_type': 2, 'map_size': 100,
         'starting_firefighter_agents': 6, 'starting_helicopter_agents': 1, 'known': True,
     }
-    presets['Level_4_large'] = {
+    presets['Transport_Firefighters_large'] = {
         'game_type': 2, 'map_size': 250,
         'starting_firefighter_agents': 12, 'starting_helicopter_agents': 2, 'known': True,
     }
     
-    # Level 5
-    presets['Level_5_small'] = {
-        'game_type': 4, 'map_size': 40, 'civilian_count': 3, 'civilian_clusters': 1, 'civilian_move_speed': 300, 'known': True,
+    # Rescue Civilians: Known Location
+    presets['Rescue_Civilians_Known_Location_small'] = {
+        'game_type': 4, 'map_size': 40, 'civilian_count': 3, 'civilian_clusters': 1, 'civilian_move_frequency': 300, 'known': True,
         'starting_firefighter_agents': 3
     }
-    presets['Level_5_large'] = {
-        'game_type': 4, 'map_size': 80, 'civilian_count': 3, 'civilian_clusters': 3, 'civilian_move_speed': 300, 'known': True,
+    presets['Rescue_Civilians_Known_Location_large'] = {
+        'game_type': 4, 'map_size': 80, 'civilian_count': 3, 'civilian_clusters': 3, 'civilian_move_frequency': 300, 'known': True,
         'starting_firefighter_agents': 5
     }
     
-    # Level 6
-    presets['Level_6'] = {
-        'game_type': 3, 'map_size': 60, 'water': False, 'fire_spread_speed': 500,
-        'starting_firefighter_agents': 5, 'starting_bulldozer_agents': 1, 'vegetation_density_offset': 30, 'vegetation_density_offset': 30, 'known': True,
+    # Suppress Fire: Contain
+    presets['Suppress_Fire_Contain'] = {
+        'game_type': 3, 'map_size': 60, 'water': False, 'fire_spread_frequency': 500,
+        'starting_firefighter_agents': 5, 'starting_bulldozer_agents': 1, 'vegetation_density_offset': 30, 'known': True,
     }
     
-    # Level 7
-    presets['Level_7'] = {
-        'game_type': 3, 'map_size': 60, 'water': True, 'fire_spread_speed': 500,'vegetation_density_offset': 30,
+    # Suppress Fire: Extinguish
+    presets['Suppress_Fire_Extinguish'] = {
+        'game_type': 3, 'map_size': 60, 'water': True, 'fire_spread_frequency': 500,
         'starting_firefighter_agents': 8, 'vegetation_density_offset': 30, 'known': True,
     }
     
-    # Level 8
-    presets['Level_8'] = {
-        'game_type': 4, 'map_size': 100, 'civilian_count': 5, 'civilian_clusters': 1, 'civilian_move_speed': 300,
+    # Rescue Civilians: Search and Rescue
+    presets['Rescue_Civilians_Search_and_Rescue'] = {
+        'game_type': 4, 'map_size': 100, 'civilian_count': 5, 'civilian_clusters': 1, 'civilian_move_frequency': 300,
         'starting_firefighter_agents': 5, 'starting_drone_agents': 2, 'known': False,
     }
     
-    # Level 9
-    presets['Level_9'] = {
-        'game_type': 3, 'map_size': 100, 'water': False, 'fire_spread_speed': 500,
-        'starting_firefighter_agents': 5, 'starting_drone_agents': 2, 'starting_bulldozer_agents': 1, 'vegetation_density_offset': 30, 'vegetation_density_offset': 30, 'known': False,
+    # Suppress Fire: Locate and Suppress
+    presets['Suppress_Fire_Locate_and_Suppress'] = {
+        'game_type': 3, 'map_size': 100, 'water': False, 'fire_spread_frequency': 500,
+        'starting_firefighter_agents': 5, 'starting_drone_agents': 2, 'starting_bulldozer_agents': 1, 'vegetation_density_offset': 30, 'known': False,
     }
     
-    # Level 10
-    presets['Level_10'] = {
-        'game_type': 3, 'map_size': 150, 'water': False, 'fire_spread_speed': 500,
+    # Suppress Fire: Locate + Deploy + Suppress
+    presets['Suppress_Fire_Locate_Deploy_Suppress'] = {
+        'game_type': 3, 'map_size': 150, 'water': False, 'fire_spread_frequency': 500,
         'starting_firefighter_agents': 10, 'starting_drone_agents': 2, 'starting_helicopter_agents': 2, 'vegetation_density_offset': 30, 'known': False,
     }
     
-    # Level 11
-    presets['Level_11'] = {
-        'game_type': 4, 'map_size': 150, 'civilian_count': 5, 'civilian_clusters': 2, 'civilian_move_speed': 300, 'known': False,
+    # Rescue Civilians: Search + Rescue + Transport
+    presets['Rescue_Civilians_Search_Rescue_Transport'] = {
+        'game_type': 4, 'map_size': 150, 'civilian_count': 5, 'civilian_clusters': 2, 'civilian_move_frequency': 300, 'known': False,
         'starting_firefighter_agents': 10, 'starting_drone_agents': 2, 'starting_helicopter_agents': 2
     }
     
-    # Level 12
-    presets['Level_12'] = {
-        'game_type': 5, 'map_size': 200, 'fire_spread_speed': 500,
-        'civilian_count': 5, 'civilian_clusters': 1, 'civilian_move_speed': 300,
+    # Full Game
+    presets['Full_Game'] = {
+        'game_type': 5, 'map_size': 200, 'fire_spread_frequency': 500,
+        'civilian_count': 5, 'civilian_clusters': 1, 'civilian_move_frequency': 300,
         'starting_firefighter_agents': 10, 'starting_bulldozer_agents': 1, 'starting_drone_agents': 2, 'starting_helicopter_agents': 2, 'vegetation_density_offset': 30, 'known': False,
     }
 
@@ -104,17 +104,17 @@ def update_config(preset, seed, config, log_trajectory=False):
     # Define all possible game-related config keys
     game_config_keys = {
         'map_size', 'lines', 'tree_count', 'trees_per_line',
-        'fire_spread_speed', 'water', 'civilian_count', 'civilian_clusters', 'civilian_move_speed'
+        'fire_spread_frequency', 'water', 'civilian_count', 'civilian_clusters', 'civilian_move_frequency'
     }
     
     # Define task-specific required variables
     task_variables = {
         0: {'map_size', 'lines', 'tree_count', 'trees_per_line'},
-        1: {'map_size', 'fire_spread_speed'},
+        1: {'map_size', 'fire_spread_frequency'},
         2: {'map_size', },
-        3: {'map_size', 'water', 'fire_spread_speed'},
-        4: {'map_size', 'civilian_count', 'civilian_clusters', 'civilian_move_speed'},
-        5: {'map_size', 'fire_spread_speed', 'civilian_count', 'civilian_clusters', 'civilian_move_speed'}
+        3: {'map_size', 'water', 'fire_spread_frequency'},
+        4: {'map_size', 'civilian_count', 'civilian_clusters', 'civilian_move_frequency'},
+        5: {'map_size', 'fire_spread_frequency', 'civilian_count', 'civilian_clusters', 'civilian_move_frequency'}
     }
     
     # Default adjustable parameters

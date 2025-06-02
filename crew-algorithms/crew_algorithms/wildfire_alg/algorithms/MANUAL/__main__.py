@@ -12,6 +12,7 @@ import datetime
 import csv
 import certifi
 import os
+from crew_algorithms.wildfire_alg.data.render_logs import compile_split_screen_video
 
 from crew_algorithms.wildfire_alg.libraries.firefighter_action_library import Run_Firefighter_Action
 from crew_algorithms.wildfire_alg.libraries.bulldozer_action_library import Run_Bulldozer_Action
@@ -105,7 +106,7 @@ def wildfire_alg(cfg: Config):
     os.environ["SSL_CERT_FILE"] = certifi.where()
     api_key = os.environ['OPENAI_API_KEY']
     
-    path = os.path.join("outputs\logs\MANUAL", level, str(seed), cfg.envs.timestamp)
+    path = os.path.join("results\logs\MANUAL", level, str(seed), cfg.envs.timestamp)
     os.makedirs(path, exist_ok=True)
 
     
@@ -115,20 +116,20 @@ def wildfire_alg(cfg: Config):
 
     
     for i in range(firefighters):
-        a = Agent(i+1, 0, cfg, path, current_task=game_data["task_description"], api_key=api_key, agent_count = agent_count)
+        a = Agent(i+1, 0, cfg, path, current_task=game_data["task_description"], api_key=api_key)
         agents.append(a)
     for i in range(bulldozers):
-        a = Agent(firefighters+i+1, 1, cfg, path, current_task=game_data["task_description"], api_key=api_key, agent_count = agent_count)
+        a = Agent(firefighters+i+1, 1, cfg, path, current_task=game_data["task_description"], api_key=api_key)
         agents.append(a)
     for i in range(drones):
-        a = Agent(firefighters+bulldozers+i+1, 2, cfg, path, current_task=game_data["task_description"], api_key=api_key, agent_count = agent_count)
+        a = Agent(firefighters+bulldozers+i+1, 2, cfg, path, current_task=game_data["task_description"], api_key=api_key)
         agents.append(a)
     for i in range(helicopters):
-        a = Agent(firefighters+bulldozers+drones+i+1, 3, cfg, path, current_task=game_data["task_description"], api_key=api_key, agent_count = agent_count)
+        a = Agent(firefighters+bulldozers+drones+i+1, 3, cfg, path, current_task=game_data["task_description"], api_key=api_key)
         agents.append(a)
 
     header = ["cumulative_score", "cumulative_api_calls","cumulative_input_tokens", "cumulative_output_tokens"]
-    csv_filename = os.path.join(path, f"action_reward.csv")
+    csv_filename = os.path.join(path, f"data.csv")
     with open(csv_filename, 'w', newline='') as f:
           writer = csv.writer(f)
           writer.writerow(header)
@@ -269,6 +270,7 @@ def wildfire_alg(cfg: Config):
 
     env.close()
     print("TEST COMPLETE")
+    compile_split_screen_video(path, os.path.join(path, "render.mp4"))
 
 if __name__ == "__main__":
 

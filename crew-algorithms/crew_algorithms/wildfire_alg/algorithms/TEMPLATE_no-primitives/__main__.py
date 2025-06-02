@@ -11,6 +11,7 @@ from crew_algorithms.wildfire_alg.core.alg_utils import get_agent_observations, 
 import datetime
 import csv
 import certifi
+from crew_algorithms.wildfire_alg.data.render_logs import compile_split_screen_video
 
 
 
@@ -73,7 +74,6 @@ def wildfire_alg(cfg: Config):
     device = "cpu" if not torch.has_cuda else "cuda:0"
     toggle_timestep_channel = ToggleTimestepChannel(uuid.uuid4())
 
-
     cfg.envs.algorithm = 'TEMPLATE_no-primitives'
     
     level = cfg.envs.level
@@ -81,13 +81,11 @@ def wildfire_alg(cfg: Config):
 
     levels = create_level_presets()
 
-
     firefighters = levels[level].get("starting_firefighter_agents",0)
     bulldozers = levels[level].get("starting_bulldozer_agents",0)
     drones = levels[level].get("starting_drone_agents",0)
     helicopters = levels[level].get("starting_helicopter_agents",0)
     agent_count = firefighters + bulldozers + drones + helicopters
-
 
     update_config(preset=levels[level], config=cfg.envs, log_trajectory=True, seed=seed)
     cfg.envs.timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
@@ -97,10 +95,8 @@ def wildfire_alg(cfg: Config):
     os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
     api_key = os.environ['OPENAI_API_KEY']
     os.environ["SSL_CERT_FILE"] = certifi.where()
-    path = os.path.join("outputs\logs\TEMPLATE_no-primitives", level, str(seed), cfg.envs.timestamp)
+    path = os.path.join("results\logs\TEMPLATE_no-primitives", level, str(seed), cfg.envs.timestamp)
     os.makedirs(path, exist_ok=True)
-
-    
     
     agents = []
     game_data = parse_game_data(state, cfg)
@@ -130,10 +126,12 @@ def wildfire_alg(cfg: Config):
     print("Agent Count: " + str(len(agents)))
 
     header = ["cumulative_score", "cumulative_api_calls","cumulative_input_tokens", "cumulative_output_tokens"]
-    csv_filename = os.path.join(path, f"action_reward.csv")
+    csv_filename = os.path.join(path, f"data.csv")
+
     with open(csv_filename, 'w', newline='') as f:
           writer = csv.writer(f)
           writer.writerow(header)
+
     f.close()
 
     print(f"Max Steps {cfg.envs.max_steps}")
@@ -155,8 +153,10 @@ def wildfire_alg(cfg: Config):
         with open(csv_filename, 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow([global_data['score'], global_data['api_calls'], global_data['input_tokens'], global_data['output_tokens']])
+        
         f.close()
 
+        agent_states = {}
 
         for agent in agents:
 
@@ -165,6 +165,7 @@ def wildfire_alg(cfg: Config):
                 print(f"AGENT_{agent.id} DESTROYED")
                 removelist.append(agent)
                 continue
+            
             elif observations["agent_type"] ==0:
                 global_data["firefighters"].append(agent)
             elif observations["agent_type"] ==1:
@@ -178,18 +179,13 @@ def wildfire_alg(cfg: Config):
             agent.last_position = observations["position"]
             agent.last_current_cell = observations["current_cell"]
             agent.map_range = observations["map_range"]
+            agent_states.update({agent.id: agent.last_position})
             agent.extra_variables = observations["extra_variables"]
-
-
 
             if agent.type==0 and agent.extra_variables[2]==1:
                 agent.options = [Action(type=0, param_1=0, param_2=0,description="ride helicopter")]
-
-
-
         
         for r in removelist:
-
             agents.remove(r)
 
         global_data.update({"agents":agents})
@@ -197,43 +193,58 @@ def wildfire_alg(cfg: Config):
         if check_game_done(global_data=global_data, cfg= cfg.envs, past_score=past_score):
             break
 
+        for agent in agents:
+           agent.generate_perception(cfg.envs, agent_states, global_data)
 
-        # for agent in agents:
-           # agent.generate_perception(cfg.envs, agent_states, global_data)
+        agent_actions = {}
+        for agent in agents:
+            agent_actions[agent]=None
+
+        #TODO: Implement your algorithm below:
 
 
 
-        #TODO: Implement the TEMPLATE_no-primitives algorithm
 
 
+
+
+
+
+
+
+
+
+
+        # END Algorithm
 
         env_action = [[0,0,0] for _ in range(cfg.envs.num_agents)]
 
         for agent in agents:
+            
+            if agent_actions[agent]!= None:
+                # Set action_str to the text action to be taken
+                action_str = ""
+                action = translate_action(action_str=action_str, type = agent.type, global_data=global_data)
+                agent.log_chat("Executing Actions", [("system", action)])
+                print(f"AGENT_{agent.id}: {action.description}")
+                try:
+                    libraries = {
+                        0: Run_Firefighter_Action,
+                        1: Run_Bulldozer_Action,
+                        2: Run_Drone_Action,
+                        3: Run_Helicopter_Action
+                    }
+                    if agent.type in libraries:
+                        action_array = libraries[agent.type](agent, action)
+                        env_action[agent.id] = action_array
+                        agent.log_chat("", [("system", action_array)])
+                        global_data["step_history"][f"time: {t}"].update({f"AGENT_{agent.id}": {"state":agent.last_position, "action": action.description}})
 
-            # Set action_str to the text action to be taken
-            action_str = ""
-            action = translate_action(action_str=action_str, type = agent.type, global_data=global_data)
-            agent.log_chat("Executing Actions", [("system", action)])
-            print(f"AGENT_{agent.id}: {action.description}")
-            try:
-                libraries = {
-                    0: Run_Firefighter_Action,
-                    1: Run_Bulldozer_Action,
-                    2: Run_Drone_Action,
-                    3: Run_Helicopter_Action
-                }
-                if agent.type in libraries:
-                    action_array = libraries[agent.type](agent, action)
-                    env_action[agent.id] = action_array
-                    agent.log_chat("", [("system", action_array)])
-                    global_data["step_history"][f"time: {t}"].update({f"AGENT_{agent.id}": {"state":agent.last_position, "action": action.description}})
-
-            except:
-                agent.log_chat("ERROR", [("system", f"ERROR EXECUTING ACTION: {action}")])
-                agent.past_actions.append(f"ERROR EXECUTING ACTION: {action.description}")
-                global_data["step_history"][f"time: {t}"].update({f"AGENT_{agent.id}": {"state":agent.last_position, "action": f"ERROR EXECUTING ACTION: {action.description}"}})
-                
+                except:
+                    agent.log_chat("ERROR", [("system", f"ERROR EXECUTING ACTION: {action}")])
+                    agent.past_actions.append(f"ERROR EXECUTING ACTION: {action.description}")
+                    global_data["step_history"][f"time: {t}"].update({f"AGENT_{agent.id}": {"state":agent.last_position, "action": f"ERROR EXECUTING ACTION: {action.description}"}})
+                    
 
 
         print(env_action)
@@ -247,6 +258,7 @@ def wildfire_alg(cfg: Config):
 
     env.close()
     print("TEST COMPLETE")
+    compile_split_screen_video(path, os.path.join(path, "render.mp4"))
 
 if __name__ == "__main__":
 

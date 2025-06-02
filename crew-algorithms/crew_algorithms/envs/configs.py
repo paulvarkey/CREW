@@ -234,7 +234,7 @@ class WildfireConfig(EnvironmentConfig):
 
     ## Scout Fire
 
-    fire_spread_speed: int = 0
+    fire_spread_frequency: int = 0
 
     ## Pick and Place
 
@@ -246,7 +246,7 @@ class WildfireConfig(EnvironmentConfig):
 
     civilian_count: int = 0
     civilian_clusters: int = 0
-    civilian_move_speed: int = 0
+    civilian_move_frequency: int = 0
 
     algorithm: str = ""
 

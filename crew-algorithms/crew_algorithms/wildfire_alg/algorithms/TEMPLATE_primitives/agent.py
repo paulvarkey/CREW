@@ -33,7 +33,7 @@ class Agent:
         for source, content in messages:
             chat_string += f"{source}\n-----\n{content}\n-----\n\n"
         chat_string += "-"*20 + "\nEND CHAT\n\n"
-        filepath = os.path.join(self.path, f"agent-{self.id}.txt")
+        filepath = os.path.join(self.path, f"Agent_{self.id}\\chats.txt")
         with open(filepath, "a", encoding="utf-8") as file:
             file.write(chat_string)
         file.close

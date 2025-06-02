@@ -129,9 +129,9 @@ namespace Examples.Wildfire
             }
 #endif
 
-            //map_size = 1073;
+            //map_size = 20;
             //seed = 929219;
-            //game_type = GameType.ContainFire;
+            //game_type = GameType.MoveCivilians;
             //lines = false;
             //tree_count = 6;
             //trees_per_line = 1;
@@ -141,7 +141,7 @@ namespace Examples.Wildfire
 
             //civilian_count = 6;
             //civilian_move_speed = 200;
-            //civilian_cluster_count = 3;
+            //civilian_cluster_count = 1;
             //fire_spread_speed = 100;
             //water = true;
 

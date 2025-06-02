@@ -13,9 +13,9 @@ past_logs/
 render/
 
 # Output directories
-outputs/data/*
-outputs/logs/*
-outputs/plots/*
+results/data/*
+results/logs/*
+results/plots/*
 
 # PDF files
 crewwildfirepdf/

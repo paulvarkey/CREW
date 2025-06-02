@@ -33,7 +33,7 @@ def resize_to_match(image, target_size):
     return cv2.resize(image, target_size)
 
 
-def compile_split_screen_video(base_folder, output_video_path, frame_rate=10):
+def compile_split_screen_video(base_folder, output_video_path, frame_rate=20):
     base_path = Path(base_folder)
     agents = [f for f in base_path.iterdir() if f.is_dir() and f.name.startswith("Agent_")]
 
@@ -52,7 +52,7 @@ def compile_split_screen_video(base_folder, output_video_path, frame_rate=10):
 
     # Server folders
     server_acc_imgs = load_sorted_images(base_path / "Server_Accumulative")
-    server_map_imgs = load_sorted_images(base_path / "Server_Map", repeat=10)
+    server_map_imgs = load_sorted_images(base_path / "Server_Map")
     max_frames = max(max_frames, len(server_acc_imgs), len(server_map_imgs))
 
     # Get a reference size from the first available image
@@ -89,6 +89,6 @@ def compile_split_screen_video(base_folder, output_video_path, frame_rate=10):
 
 
 if __name__ == "__main__":
-    folder_path = "./crew-algorithms\crew_algorithms\wildfire_alg\\render\\2025-04-28_23-02-58"  # Replace with your folder path
+    folder_path = "./crew-algorithms\crew_algorithms\wildfire_alg\\results\logs\CAMON\Cut_Trees_Sparse_small\\483\\2025-05-30-16-18-19"
     output_path = f"{folder_path}\combined_output.mp4"
     compile_split_screen_video(folder_path, output_path)

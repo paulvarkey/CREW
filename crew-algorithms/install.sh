@@ -20,12 +20,12 @@ echo "Creating UnityLogs directory..."
 mkdir -p ../UnityLogs
 
 # Create a conda environment with Python 3.10.11
-echo "Creating conda environment 'wildfire' with Python 3.10.11..."
-conda create -n wildfire python=3.10.11 -y
+echo "Creating conda environment 'crew' with Python 3.10.11..."
+conda create -n crew python=3.10.11 -y
 
 # Activate the environment and install PyAudio
-echo "Activating the 'wildfire' environment and installing PyAudio..."
-conda activate wildfire
+echo "Activating the 'crew' environment and installing PyAudio..."
+conda activate crew
 conda install -c conda-forge pyaudio -y
 
 

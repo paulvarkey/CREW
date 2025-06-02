@@ -99,7 +99,7 @@ namespace Examples.Wildfire
                 NumAgents = 100;
             }
 
-            //StartingFirefighterAgents =10;
+            //StartingFirefighterAgents =1;
             //StartingBulldozerAgents = 5;
             //StartingDroneAgents = 10;
             //StartingHelicopterAgents = 5;

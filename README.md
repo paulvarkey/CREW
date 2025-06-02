@@ -34,6 +34,10 @@ By working in unison, these two subcomponents create a robust and user-friendly 
 }  
 ```
 
+# Projects
+[🔥 CREW Wildfire](./crew-algorithms/crew_algorithms/wildfire_alg/) - Real-time wildfire simulation and human-AI collaborative decision making environment
+
+
 # Documentation
 
 For quick examples to get started, API references, tutorials on how to run and develop algorithms and environments, please refer to our [documentation website](https://generalroboticslab.github.io/crew-docs/).

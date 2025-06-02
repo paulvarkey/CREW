@@ -60,7 +60,6 @@ def make_base_env(
             "-StartingDroneAgents", f"{env_cfg.starting_drone_agents}",
             "-StartingHelicopterAgents", f"{env_cfg.starting_helicopter_agents}",
         ]
-        print("max and starting")
     elif hasattr(env_cfg, "num_agents"):
         num_player_args = ["-NumAgents", f"{env_cfg.num_agents}"]
     elif hasattr(env_cfg, "num_hiders") and hasattr(env_cfg, "num_seekers"):
@@ -76,12 +75,12 @@ def make_base_env(
     cam_size_arg = []
     if hasattr(env_cfg, "server_cam_size"):
         cam_size_arg = ["-ServerCamSize", f"{env_cfg.server_cam_size}"]
-        print("servercamsize set")
+
 
     log_trajectory_arg = []
     if hasattr(env_cfg, "log_trajectory"):
         log_trajectory_arg = ["-LogTrajectory", "1"] if env_cfg.log_trajectory else ["-LogTrajectory", "0"]
-        print("logtrajectory set")
+
 
 
     if hasattr(env_cfg, "map_size"):
@@ -119,11 +118,11 @@ def make_base_env(
             "-Lines", "1" if env_cfg.lines else "0",
             "-TreeCount", f"{env_cfg.tree_count}",
             "-TreesPerLine", f"{env_cfg.trees_per_line}",
-            "-FireSpreadSpeed", f"{env_cfg.fire_spread_speed}",
+            "-FireSpreadSpeed", f"{env_cfg.fire_spread_frequency}",
             "-Water", "1" if env_cfg.water else "0",
             "-CivilianCount", f"{env_cfg.civilian_count}",
             "-CivilianClusters", f"{env_cfg.civilian_clusters}",
-            "-CivilianMoveSpeed", f"{env_cfg.civilian_move_speed}",
+            "-CivilianMoveSpeed", f"{env_cfg.civilian_move_frequency}",
             "-VegetationDensityOffset", f"{env_cfg.vegetation_density_offset}"
 
         ]
