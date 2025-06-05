@@ -50,6 +50,7 @@ AGENT_COUNT_MAP = {
     "Level_12": 15
 }
 # Levels to exclude from rate-vs-agents
+# This is because the number of agents may not be constant across trajectories
 EXCLUDED_LEVELS = {"Level_6", "Level_7", "Level_8", "Level_9", "Level_10","Level_11", "Level_12"}
 
 METRICS = [
@@ -231,65 +232,7 @@ def plot_rate_vs_agents(data):
         csv_df.to_csv(out_csv)
         print(f"Saved {metric}_vs_agents to {out_csv}")
 
-# -- CSV Export Functions -----------------------------------------------------
-...
-# rest unchanged
 
-def export_final_score_stats(data):
-    levels = sorted(data.keys())
-    algos = sorted({algo for lvl in data for algo in data[lvl]})
-    df_stats = pd.DataFrame(index=levels, columns=algos)
-    for lvl in levels:
-        for algo in algos:
-            dfs = data[lvl].get(algo, [])
-            if not dfs:
-                df_stats.at[lvl, algo] = ""
-            else:
-                finals = [d['cumulative_score'].iloc[-1] for d in dfs]
-                m, rng = np.mean(finals), np.max(finals) - np.min(finals)
-                df_stats.at[lvl, algo] = f"{m:.2f}±{rng:.2f}"
-    out_fp = os.path.join(OUTPUT_DIR, 'final_score_stats.csv')
-    df_stats.to_csv(out_fp)
-    print(f"Saved final score stats to {out_fp}")
-
-
-def export_rate_stats(data):
-    algos = sorted({algo for lvl in data for algo in data[lvl]})
-    df_rate = pd.DataFrame(index=algos, columns=RATE_METRICS)
-    for algo in algos:
-        for met in RATE_METRICS:
-            vals = []
-            for lvl in data:
-                for d in data[lvl].get(algo, []):
-                    vals.append(d[met].iloc[-1] / len(d))
-            arr = np.array(vals)
-            df_rate.at[algo, met] = f"{arr.mean():.2f}±{arr.std():.2f}"
-    out_fp = os.path.join(OUTPUT_DIR, 'rate_stats.csv')
-    df_rate.to_csv(out_fp)
-    print(f"Saved rate stats to {out_fp}")
-
-# -- Main ----------------------------------------------------------------------
-
-def main():
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    data = collect_data()
-    if not data:
-        print(f"No data under {LOGS_DIR}")
-        return
-    plot_line_metrics(data)
-    plot_bar_metrics(data)
-    plot_run_length_bars(data)
-    plot_rate_bar_metrics(data)
-    plot_rate_vs_agents(data)
-    export_final_score_stats(data)
-    export_rate_stats(data)
-    print("All plots and CSV summaries generated in", OUTPUT_DIR)
-
-if __name__ == '__main__':
-    main()
-
-
-# -- CSV Export Functions -----------------------------------------------------
 
 def export_final_score_stats(data):
     levels = sorted(data.keys())

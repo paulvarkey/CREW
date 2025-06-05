@@ -65,35 +65,6 @@ def make_radar_chart(df, title):
     plt.show()
 
 
-import matplotlib.pyplot as plt
-import pandas as pd
-from io import StringIO
-import numpy as np
-
-# First dataset
-data1 = StringIO("""
-Behaviour,CAMON,COELA,Embodied,HMAS-2
-TD,0.387,0.288,0.368,0.383
-AC,0.503,0.412,0.461,0.452
-SR,0.292,0.161,0.29,0.278
-OS,0.105,0.107,0.154,0.155
-RC,0.486,0.361,0.43,0.407
-PA,0.218,0.099,0.21,0.205
-
-""")
-df1 = pd.read_csv(data1)
-
-# Second dataset
-data2 = StringIO("""
-Behaviour,CAMON,COELA,Embodied,HMAS-2
-TD,1.00,0.88,0.75,0.88
-AC,1.00,0.75,0.50,0.75
-SR,0.50,0.13,0.38,0.50
-OS,0.00,0.13,0.00,0.13
-RC,0.67,0.33,0.00,0.33
-PA,0.25,0.13,0.13,0.13
-""")
-df2 = pd.read_csv(data2)
 
 
 def save_highdef_radar(df, title, filename, dpi=300, figsize=(8, 8)):
@@ -145,8 +116,4 @@ def save_highdef_radar(df, title, filename, dpi=300, figsize=(8, 8)):
     plt.tight_layout()
     fig.savefig(filename, dpi=dpi, bbox_inches='tight')
     plt.close(fig)
-# Generate the charts
-save_highdef_radar(df1, 'Baseline Behavioral Goals', 'baseline_behavioral_goals.png', dpi=300, figsize=(10,10))
 
-
-plt.show()
