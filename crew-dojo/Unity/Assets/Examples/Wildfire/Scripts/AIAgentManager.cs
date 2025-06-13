@@ -37,10 +37,15 @@ namespace Examples.Wildfire
         public int StartingHelicopterAgents;
         public int AgentIndex;
 
+        public bool replay_enabled;
+
+        // Replay mode fields
+        private Dictionary<int, List<float[]>> _replayTrajectories = new Dictionary<int, List<float[]>>();
+        private string _replayFilePath = "/Resources/replays/pickup.txt";
 
         private void Awake()
         {
-
+            replay_enabled = false;
 
             _connection = FindObjectOfType<DojoConnection>();
             _gameManager = FindObjectOfType<GameManager>();
@@ -99,13 +104,18 @@ namespace Examples.Wildfire
                 NumAgents = 100;
             }
 
-            //StartingFirefighterAgents =1;
-            //StartingBulldozerAgents = 5;
-            //StartingDroneAgents = 10;
-            //StartingHelicopterAgents = 5;
+            //StartingFirefighterAgents =5;
+            //StartingBulldozerAgents = 0;
+            //StartingDroneAgents = 0;
+            //StartingHelicopterAgents = 1;
 
-
-
+        }
+        private void Update()
+        {
+            if (replay_enabled && Input.GetKeyDown(KeyCode.R))
+            {
+                StartReplay();
+            }
         }
 
 
@@ -154,11 +164,14 @@ namespace Examples.Wildfire
             }
             for (int i = 0; i < StartingHelicopterAgents; i++)
             {
-
-                SpawnAgent(ControllerType.Helicopter, new Vector3(spawn_location_game.x, 10, spawn_location_game.y));
+                SpawnAgent(ControllerType.Helicopter, new Vector3(spawn_location_game.x, height + 10, spawn_location_game.y));
             }
 
-           
+
+            if (replay_enabled){
+                LoadReplayFromFile();
+            }
+
 
         }
         public void SpawnAgent(ControllerType type, Vector3 pos)
@@ -210,10 +223,6 @@ namespace Examples.Wildfire
             agent.ResetAgent();
             netObj.Spawn();
 
-
-            
-
-
         }
 
 
@@ -240,6 +249,129 @@ namespace Examples.Wildfire
                 {
                     SideChannelManager.UnregisterSideChannel(_eventChannel);
                 }
+            }
+        }
+
+        public void LoadReplayFromFile()
+        {
+            try
+            {
+                if (!System.IO.File.Exists(Application.streamingAssetsPath + _replayFilePath))
+                {
+                    Debug.LogError($"Replay file not found: {_replayFilePath}");
+                    return;
+                }
+
+                _replayTrajectories.Clear();
+                
+                // Read the file using FileReader
+                string[] lines = System.IO.File.ReadAllLines(Application.streamingAssetsPath + _replayFilePath);
+                
+                if (lines.Length < 3) // Need at least header + time1 + one agent action
+                {
+                    Debug.LogError("Replay file is empty or missing header");
+                    return;
+                }
+
+                // First line contains the number of agents and steps
+                string[] header = lines[0].Split(',');
+                if (header.Length != 2)
+                {
+                    Debug.LogError("Invalid header format. Expected: numAgents,numSteps");
+                    return;
+                }
+
+                if (!int.TryParse(header[0], out int numAgents) || !int.TryParse(header[1], out int numSteps))
+                {
+                    Debug.LogError("Invalid header values. Expected integers for numAgents and numSteps");
+                    return;
+                }
+
+                if (numAgents <= 0 || numSteps <= 0)
+                {
+                    Debug.LogError("Invalid header values. numAgents and numSteps must be positive");
+                    return;
+                }
+
+                // Verify file has correct number of lines
+                int expectedLines = 1 + numSteps + (numSteps * numAgents); // header + time lines + action lines
+                if (lines.Length != expectedLines)
+                {
+                    Debug.LogError($"Invalid file length. Expected {expectedLines} lines but found {lines.Length}");
+                    return;
+                }
+
+                // Initialize trajectories for each agent
+                for (int agentId = 0; agentId < numAgents; agentId++)
+                {
+                    _replayTrajectories[agentId] = new List<float[]>();
+                }
+                
+                // Read actions by timestep
+                int currentLine = 1; // Start after header
+                for (int step = 0; step < numSteps; step++)
+                {
+                    // Skip timestep line
+                    currentLine++;
+                    
+                    // Read actions for all agents at this timestep
+                    for (int agentId = 0; agentId < numAgents; agentId++)
+                    {
+                        string[] parts = lines[currentLine].Split(',');
+                        if (parts.Length != 3)
+                        {
+                            Debug.LogError($"Invalid action format at line {currentLine + 1}. Expected 3 values per action");
+                            return;
+                        }
+
+                        float[] action = new float[3];
+                        for (int j = 0; j < parts.Length; j++)
+                        {
+                            if (!float.TryParse(parts[j], out float value))
+                            {
+                                Debug.LogError($"Invalid action value at line {currentLine + 1}, value {j + 1}: {parts[j]}");
+                                return;
+                            }
+                            action[j] = value;
+                        }
+                        _replayTrajectories[agentId].Add(action);
+                        currentLine++;
+                    }
+                }
+
+                Debug.Log($"Successfully loaded replay trajectories for {_replayTrajectories.Count} agents");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error loading replay file: {e.Message}");
+                _replayTrajectories.Clear();
+            }
+        }
+
+        public void StartReplay()
+        {
+            if (_replayTrajectories.Count == 0)
+            {
+                Debug.LogWarning("No replay trajectories loaded. Call LoadReplayFromFile first.");
+                return;
+            }
+
+            // Distribute trajectories to agents
+            foreach (AIAgent agent in Agents)
+            {
+                if (_replayTrajectories.TryGetValue(agent.AgentId-1, out var trajectory))
+                {
+                    agent.SetReplayMode(true, trajectory);
+                }
+            }
+        }
+
+        public void StopReplay()
+        {
+            // Reset all agents to normal mode
+            foreach (AIAgent agent in Agents)
+            {
+                agent.SetReplayMode(false);
             }
         }
 

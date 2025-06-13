@@ -38,8 +38,10 @@ namespace Examples.Wildfire
         public float[] HumanActionArray;
         public MapManager map;
         
-
-
+        // Replay mode fields
+        private bool _isReplayMode = false;
+        private List<float[]> _replayTrajectory;
+        private int _currentReplayIndex = 0;
 
         private int fixedUpdateCount = 0;
 
@@ -243,7 +245,6 @@ namespace Examples.Wildfire
                 {
                     case (0f):
                         // Do nothing
-                        
                         break;
                     case (1f):
                         //_agentManager.SpawnAgent(ControllerType.Firefighter, new Vector3(0, 0, 0));
@@ -260,15 +261,26 @@ namespace Examples.Wildfire
                 }
 
             }
-            else if (controllerType == ControllerType.Default)
+
+            if (controllerType != ControllerType.Default)
             {
+                if (_isReplayMode)
+                {
+                    if (_currentReplayIndex < _replayTrajectory.Count)
+                    {
+                        actionArray = _replayTrajectory[_currentReplayIndex];
+                        Debug.Log($"Agent {AgentId} executing replay action {_currentReplayIndex + 1}/{_replayTrajectory.Count}: [{string.Join(", ", actionArray)}]");
 
-            }
-            else
-            {
+                        _currentReplayIndex++;
+                    }
+                    else
+                    {
+                        Debug.Log($"Agent {AgentId} completed replay trajectory");
+                        _isReplayMode = false;
+                    }
+                }
 
-
-                if(actionArray.Sum() == 0)
+                if (actionArray.Sum() == 0)
                 {
                     actionArray[0] = -1f;
                 }
@@ -281,7 +293,7 @@ namespace Examples.Wildfire
 
         private void DecisionRequestLoop()
         {
-            if (IsPlayerAlive)
+            if(IsPlayerAlive)
             {
                 RequestDecision();
             }
@@ -351,6 +363,18 @@ namespace Examples.Wildfire
             {
                 HumanActionArray = new float[3] { 0f, (float)clientActionMessage[2], (float)clientActionMessage[3] };
             }
+        }
+
+        public void SetReplayMode(bool isReplayMode, List<float[]> trajectory = null)
+        {
+            _isReplayMode = isReplayMode;
+            _currentReplayIndex = 0;
+            _replayTrajectory = trajectory;
+        }
+
+        public bool IsInReplayMode()
+        {
+            return _isReplayMode;
         }
     }
 }

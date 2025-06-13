@@ -41,7 +41,7 @@ namespace Examples.Wildfire
         public RenderTexture serverTexture;
         public Camera clientCam;
 
-        public bool log_trajectory;
+
 
         public AIAgent manager_agent;
 
@@ -70,7 +70,7 @@ namespace Examples.Wildfire
         private void Awake()
         {
 
-            log_trajectory = false;
+
             frames_per_capture = 5;
             ignition_chance = 1;
             false_fire_chance = 1;
@@ -131,14 +131,6 @@ namespace Examples.Wildfire
                     serverCam.orthographicSize = 0.5f / camSize;
                     ++idx;
                 }
-                if (arg.Equals("-LogTrajectory") && idx < args.Length - 1 && int.TryParse(args[idx + 1], out var logTraj))
-                {
-                    if (logTraj == 1)
-                    {
-                        log_trajectory = true;
-                    }
-                }
-
                 max_steps = 600;
 
             }
@@ -635,7 +627,7 @@ namespace Examples.Wildfire
                     serverCam.transform.position = center-new Vector3(0,100,0);
                     serverCam.orthographicSize = (0.5f * (float)squareSize) / MapManager.mapSize.x;
                     
-                    if (((frame % frames_per_capture) ==0)&& log_trajectory)
+                    if (((frame % frames_per_capture) ==0)&& ConfigReader.log_trajectory)
                     {
                         SaveRenders(frame / frames_per_capture);
                     }

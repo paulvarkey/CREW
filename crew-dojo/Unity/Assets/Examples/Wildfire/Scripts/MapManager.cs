@@ -118,8 +118,8 @@ namespace Examples.Wildfire
 			framesPerStep = ConfigReader.fire_spread_speed;
 			mapSize.x = ConfigReader.map_size;
 			mapSize.y = ConfigReader.map_size;
-			//meshHeightMultiplier = 6;
-			meshHeightMultiplier = 6f;
+			meshHeightMultiplier = 6;
+			//meshHeightMultiplier = 25f;
 			Connection = FindObjectOfType<DojoConnection>();
 			// Higher constant -> Less influence
 			moisture_constant = 10;
@@ -1209,11 +1209,11 @@ namespace Examples.Wildfire
 			CutTree(pos, full);
         }
 
-		public void SprayWater(Vector2 pos, int radius, float angle, Vector2 aim)
+		public void SprayWater(Vector2 pos, float radius, float angle, Vector2 aim)
         {
-			for (int y=((int)pos.y)-radius; y < ((int)pos.y) + radius+1; y++)
+			for (int y=((int)pos.y)-((int)radius+1); y < ((int)pos.y) + (radius + 1); y++)
             {
-				for (int x = ((int)pos.x) - radius; x < ((int)pos.x) + radius + 1; x++)
+				for (int x = ((int)pos.x) - ((int)radius + 1); x < ((int)pos.x) + (radius + 1); x++)
 				{
 
 
@@ -1231,7 +1231,11 @@ namespace Examples.Wildfire
 					if (currCell.state == CellState.ignited || currCell.state == CellState.on_fire || currCell.state == CellState.extenguishing)
 					{
 						currCell.SetState(CellState.fully_extenguished);
-						GameObject.Destroy(currCell.fire);
+						//GameObject.Destroy(currCell.fire);
+						ParticleSystem fire = currCell.fire.GetComponent<ParticleSystem>();
+						fire.Stop();
+						
+
 						mapData.colourMap[texture_coordinate] = new Color(22f / 255, 26f / 255, 29f / 255);
 					}
 					else
@@ -1265,7 +1269,7 @@ namespace Examples.Wildfire
 		}
 
 		[ClientRpc]
-		void SprayWaterClientRpc(Vector2 pos, int radius, float angle, Vector2 aim)
+		void SprayWaterClientRpc(Vector2 pos, float radius, float angle, Vector2 aim)
         {
 			SprayWater(pos, radius, angle, aim);
         }
@@ -1509,10 +1513,11 @@ namespace Examples.Wildfire
 			else if (this.state == CellState.extenguishing && this.prev_state == CellState.extenguishing)
 			{
 				this.burning_time++;
-				if (this.burning_time >= 15)
+				if (this.burning_time >= 10)
 				{
 					this.SetState(CellState.fully_extenguished);
-					GameObject.Destroy(this.fire);
+					ParticleSystem fire = this.fire.GetComponent<ParticleSystem>();
+					fire.Stop();
 				}
 				return;
 			}

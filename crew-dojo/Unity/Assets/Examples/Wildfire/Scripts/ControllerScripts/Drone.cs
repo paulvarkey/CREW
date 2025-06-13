@@ -18,7 +18,7 @@ namespace Examples.Wildfire
         {
             chunk_radius = 7;
             target_position = this.transform.position;
-            speed = 15f / 50f;
+            speed = 10f / 50f;
             alive = true;
             map.drones.Add(this);
             controllerType = ControllerType.Drone;
@@ -52,7 +52,7 @@ namespace Examples.Wildfire
 
                     Vector2 new_pos = new Vector2(this.transform.position.x, this.transform.position.z) + speed * target_vector;
                     Physics.Raycast(new Vector3(new_pos.x, 0, new_pos.y) + new Vector3(0f, 1000f, 0f), new Vector3(0, -1, 0), out hit);
-                    float height = 1010f - hit.distance;
+                    float height = 1013f - hit.distance;
 
                     this.transform.position = new Vector3(new_pos.x, height, new_pos.y);
                     Vector2 totarget = Vector3.Normalize(target_position - new Vector2(this.transform.position.x, this.transform.position.z));

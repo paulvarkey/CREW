@@ -58,7 +58,7 @@ namespace Examples.Wildfire
 
                     Vector2 new_pos = new Vector2(this.transform.position.x, this.transform.position.z) + speed * target_vector;
                     Physics.Raycast(new Vector3(new_pos.x, 0, new_pos.y) + new Vector3(0f, 1000f, 0f), new Vector3(0, -1, 0), out hit);
-                    float height = 1025f - hit.distance;
+                    float height = 1017f - hit.distance;
 
                     this.transform.position = new Vector3(new_pos.x, height, new_pos.y);
                     Vector2 totarget = Vector3.Normalize(target_position - new Vector2(this.transform.position.x, this.transform.position.z));
@@ -74,9 +74,10 @@ namespace Examples.Wildfire
                     this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetrot, 0.1f);
                     transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
                 }
+
                 foreach(Firefighter f in firefightercarry)
                 {
-                    f.transform.position = this.transform.position - new Vector3(0, 1, 0);
+                    f.transform.position = this.transform.position - new Vector3(0, 0.5f, 0);
                 }
                 
             }
@@ -185,7 +186,7 @@ namespace Examples.Wildfire
             }
             if(water > 0)
             {
-                this.map.SprayWater(new Vector2((int)gridPos.x, (int)gridPos.y), 5, 360f, new Vector2(1,1));
+                this.map.SprayWater(new Vector2((int)gridPos.x, (int)gridPos.y), 4.5f, 360f, new Vector2(1,1));
                 water -= 1;
             }
         }

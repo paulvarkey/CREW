@@ -37,6 +37,7 @@ namespace Examples.Wildfire
         public static string level;
         public static int vegetation_density_offset;
         public static string timestamp;
+        public static bool log_trajectory;
 
 
         void Awake()
@@ -51,6 +52,7 @@ namespace Examples.Wildfire
             fire_spread_speed = 100;
             civilian_move_speed = 100;
             vegetation_density_offset = 20;
+            log_trajectory = false;
 
 
             for (var idx = 0; idx < args.Length; ++idx)
@@ -125,13 +127,20 @@ namespace Examples.Wildfire
                 {
                     timestamp = args[idx + 1];
                 }
+                if (arg.Equals("-LogTrajectory") && idx < args.Length - 1 && int.TryParse(args[idx + 1], out var logTraj))
+                {
+                    if (logTraj == 1)
+                    {
+                        log_trajectory = true;
+                    }
+                }
 
             }
 #endif
 
-            //map_size = 20;
-            //seed = 929219;
-            //game_type = GameType.MoveCivilians;
+            //map_size = 1073;
+            //seed = 598433;
+            //game_type = GameType.ContainFire;
             //lines = false;
             //tree_count = 6;
             //trees_per_line = 1;
@@ -142,7 +151,7 @@ namespace Examples.Wildfire
             //civilian_count = 6;
             //civilian_move_speed = 200;
             //civilian_cluster_count = 1;
-            //fire_spread_speed = 100;
+            //fire_spread_speed = 400;
             //water = true;
 
 
