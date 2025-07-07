@@ -212,9 +212,6 @@ def wildfire_alg(cfg: Config):
 
 
 
-
-
-
         # END Algorithm
 
         env_action = [[0,0,0] for _ in range(cfg.envs.num_agents)]

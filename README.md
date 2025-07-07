@@ -35,7 +35,7 @@ By working in unison, these two subcomponents create a robust and user-friendly 
 ```
 
 # Projects
-[🔥 CREW Wildfire](./crew-algorithms/crew_algorithms/wildfire_alg/) - Real-time wildfire simulation and human-AI collaborative decision making environment
+[🔥 CREW Wildfire](./crew-algorithms/crew_algorithms/wildfire_alg/) - Large scale LLM-Agent Teaming
 
 
 # Documentation

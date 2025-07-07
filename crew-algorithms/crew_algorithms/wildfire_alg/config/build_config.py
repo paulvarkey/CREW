@@ -104,17 +104,17 @@ def update_config(preset, seed, config, log_trajectory=False):
     # Define all possible game-related config keys
     game_config_keys = {
         'map_size', 'lines', 'tree_count', 'trees_per_line',
-        'fire_spread_frequency', 'water', 'civilian_count', 'civilian_clusters', 'civilian_move_frequency'
+        'fire_spread_frequency', 'water', 'civilian_count', 'civilian_clusters', 'civilian_move_frequency', 'known'
     }
     
     # Define task-specific required variables
     task_variables = {
         0: {'map_size', 'lines', 'tree_count', 'trees_per_line'},
         1: {'map_size', 'fire_spread_frequency'},
-        2: {'map_size', },
-        3: {'map_size', 'water', 'fire_spread_frequency'},
-        4: {'map_size', 'civilian_count', 'civilian_clusters', 'civilian_move_frequency'},
-        5: {'map_size', 'fire_spread_frequency', 'civilian_count', 'civilian_clusters', 'civilian_move_frequency'}
+        2: {'map_size'},
+        3: {'map_size', 'water', 'fire_spread_frequency', 'known'},
+        4: {'map_size', 'civilian_count', 'civilian_clusters', 'civilian_move_frequency', 'known'},
+        5: {'map_size', 'fire_spread_frequency', 'civilian_count', 'civilian_clusters', 'civilian_move_frequency', 'known'}
     }
     
     # Default adjustable parameters
