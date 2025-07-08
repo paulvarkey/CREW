@@ -1,8 +1,8 @@
 # CREW-WILDFIRE
 
-[![docs badge](https://img.shields.io/badge/docs-reference-blue.svg)](https://generalroboticslab.github.io/crew-docs/)
+[![docs badge](https://img.shields.io/badge/docs-reference-blue.svg)](https://generalroboticslab.github.io/wildfire-docs/)
 
-[Project Website](http://www.generalroboticslab.com/CREW) | [Video](https://www.youtube.com/watch?v=RINSo3uI0dI) | [Paper](https://arxiv.org/abs/2408.00170)
+[Project Website](http://www.generalroboticslab.com/CREW-Wildfire) | [Video](https://www.youtube.com/watch?v=IspKVw3mfFg) | [Paper](https://arxiv.org/abs/2507.05178)
 
 CREW-WILDFIRE is an open-source benchmark designed to evaluate LLM-based multi-agent Agentic AI systems in complex, dynamic, real-world tasks. Built on the human-AI teaming CREW simulation platform, it provides procedurally generated wildfire response scenarios that test the limits of multi-agent coordination, communication, and planning under uncertainty.
 
@@ -27,15 +27,19 @@ Through these features, researchers can evaluate and develop next-generation mul
 ![crew teaser](assets/wildfire-teaser.png)
 
 
-UPDATE WHEN PUBLISHED
+
 # Citation
+
 ```
-@inproceedings{zhang2024crew,
-  title={CREW: Facilitating Human-AI Teaming Research},
-  author={Zhang, Lingyu and Ji, Zhengran and Chen, Boyuan},
-  booktitle={Preprint},
-  year={2024}
-}  
+@misc{hyun2025crewwildfirebenchmarkingagenticmultiagent,
+      title={CREW-WILDFIRE: Benchmarking Agentic Multi-Agent Collaborations at Scale}, 
+      author={Jonathan Hyun and Nicholas R Waytowich and Boyuan Chen},
+      year={2025},
+      eprint={2507.05178},
+      archivePrefix={arXiv},
+      primaryClass={cs.MA},
+      url={https://arxiv.org/abs/2507.05178}, 
+}
 ```
 
 # Documentation
