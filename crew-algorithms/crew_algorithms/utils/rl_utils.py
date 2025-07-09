@@ -52,7 +52,15 @@ def make_base_env(
         raise ValueError("Unsupported platform")
 
     num_player_args = []
-    if hasattr(env_cfg, "num_agents"):
+    if hasattr(env_cfg, "num_agents") and hasattr(env_cfg, "starting_firefighter_agents") and hasattr(env_cfg, "starting_bulldozer_agents") and hasattr(env_cfg, "starting_drone_agents") and hasattr(env_cfg, "starting_helicopter_agents"):
+        num_player_args = [
+            "-NumAgents", f"{env_cfg.num_agents}",
+            "-StartingFirefighterAgents", f"{env_cfg.starting_firefighter_agents}",
+            "-StartingBulldozerAgents", f"{env_cfg.starting_bulldozer_agents}",
+            "-StartingDroneAgents", f"{env_cfg.starting_drone_agents}",
+            "-StartingHelicopterAgents", f"{env_cfg.starting_helicopter_agents}",
+        ]
+    elif hasattr(env_cfg, "num_agents"):
         num_player_args = ["-NumAgents", f"{env_cfg.num_agents}"]
     elif hasattr(env_cfg, "num_hiders") and hasattr(env_cfg, "num_seekers"):
         num_player_args = [
@@ -63,7 +71,20 @@ def make_base_env(
         ]
         if env_cfg.num_hiders < 1 or env_cfg.num_seekers < 1:
             raise ValueError("Cannot have less than 1 hider or seeker")
+        
+    cam_size_arg = []
+    if hasattr(env_cfg, "server_cam_size"):
+        cam_size_arg = ["-ServerCamSize", f"{env_cfg.server_cam_size}"]
 
+
+    log_trajectory_arg = []
+    if hasattr(env_cfg, "log_trajectory"):
+        log_trajectory_arg = ["-LogTrajectory", "1"] if env_cfg.log_trajectory else ["-LogTrajectory", "0"]
+
+
+
+    if hasattr(env_cfg, "map_size"):
+        map_args = ["-MapSize", f"{env_cfg.map_size}"]
     if hasattr(env_cfg, "seed"):
         seed_args = ["-Seed", f"{env_cfg.seed}"]
 
@@ -75,6 +96,36 @@ def make_base_env(
     maze_args = []
     if hasattr(env_cfg, "rand_maze"):
         maze_args = ["-RandMaze", "1"] if env_cfg.rand_maze else ["-RandMaze", "0"]
+
+    if hasattr(env_cfg, "algorithm"):
+         algorithm_args = ["-Algorithm", env_cfg.algorithm]
+
+    if hasattr(env_cfg, "render_folder_path"):
+         render_folder_path_args = ["-RenderFolderPath", str(env_cfg.render_folder_path)]
+
+    if hasattr(env_cfg, "timestamp"):
+         timestamp_args = ["-Timestamp", str(env_cfg.timestamp)]
+
+         
+    if hasattr(env_cfg, "level"):
+         level_args = ["-Level", env_cfg.level]
+
+
+
+    if hasattr(env_cfg, "game_type"):
+        game_args = [
+            "-GameType", f"{env_cfg.game_type}",
+            "-Lines", "1" if env_cfg.lines else "0",
+            "-TreeCount", f"{env_cfg.tree_count}",
+            "-TreesPerLine", f"{env_cfg.trees_per_line}",
+            "-FireSpreadSpeed", f"{env_cfg.fire_spread_frequency}",
+            "-Water", "1" if env_cfg.water else "0",
+            "-CivilianCount", f"{env_cfg.civilian_count}",
+            "-CivilianClusters", f"{env_cfg.civilian_clusters}",
+            "-CivilianMoveSpeed", f"{env_cfg.civilian_move_frequency}",
+            "-VegetationDensityOffset", f"{env_cfg.vegetation_density_offset}"
+
+        ]
 
     channel_args = []
     side_channels = []
@@ -115,6 +166,14 @@ def make_base_env(
             *seed_args,
             *feedback_args,
             *maze_args,
+            *cam_size_arg,
+            *log_trajectory_arg,
+            *game_args,
+            *map_args,
+            *algorithm_args,
+            *render_folder_path_args,
+            *timestamp_args,
+            *level_args,
         ],
         log_folder=str(env_cfg.log_folder_path),
         base_port=find_free_port(),
