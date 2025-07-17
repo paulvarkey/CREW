@@ -1,4 +1,4 @@
-from openai import OpenAI
+import openai
 import os
 from pydantic import BaseModel
 import numpy as np
@@ -55,8 +55,8 @@ class AdaptiveOptions(BaseModel):
 
 os.environ["SSL_CERT_FILE"] = certifi.where()
 
-api_key = os.environ['OPENAI_API_KEY']
-client = OpenAI(api_key=api_key)
+openai.api_key = os.environ['OPENAI_API_KEY']
+
 def request(agent):
 
     sub_goal = agent.options[0]
@@ -87,7 +87,7 @@ def request(agent):
     prompt_content = prompt_content.replace("COMPLETION", completion_condition)
 
 
-    completion = client.chat.completions.create(
+    completion = openai.Completion.create(
         model=agent.cfg.llms.actor_model,
         messages=[
             {"role": "system", "content": f"{context_content}"},
@@ -150,7 +150,7 @@ def critique_response(agent, action):
             pass
 
 
-        critic = client.chat.completions.create(
+        critic = openai.Completion.create(
             model=agent.cfg.llms.critic_model,
             messages=[
                 {"role": "system", "content": f"{critic_context_content}"},
@@ -217,7 +217,7 @@ def regenerate_response(agent, action, critique):
 
     critical_string = critique.explanation
 
-    newcompletion = client.chat.completions.create(
+    newcompletion = openai.Completion.create(
         model=agent.cfg.llms.actor_model,
         messages=[
             {"role": "system", "content": f"{context_content}"},
@@ -277,7 +277,7 @@ def request_options(agent):
 
     while not option_sequence:
         try:
-            completion = client.chat.completions.create(
+            completion = openai.Completion.create(
                 model=agent.cfg.llms.planner_model,
                 messages=[
                     {"role": "user", "content": f"{context_content}"},
@@ -314,7 +314,7 @@ def translate_options(agent, option_sequence):
 
     prompt_content = prompt_content.replace("ACTIONS", str(optionstring))
 
-    completion = client.chat.completions.create(
+    completion = openai.Completion.create(
         model=agent.cfg.llms.translator_model,
         messages=[
             {"role": "system", "content": f"{context_content}"},
@@ -343,5 +343,3 @@ def translate_options(agent, option_sequence):
 
     return options
     
-
-

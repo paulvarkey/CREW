@@ -1,5 +1,5 @@
 import os
-from openai import OpenAI
+import openai
 from crew_algorithms.wildfire_alg.algorithms.CAMON.__main__ import Config
 from typing import List, Tuple, Dict
 
@@ -136,8 +136,7 @@ class Agent:
             f"Create a detailed text summary of all relevant information, such as location, surroundings, presence of fire and civilians, etc. Speak only in first person as AGENT_{self.id}. "
         )
 
-        client = OpenAI(api_key=self.api_key)
-        response = client.chat.completions.create(
+        response = openai.Completion.create(
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": system_message},
@@ -153,8 +152,4 @@ class Agent:
         perception = response.choices[0].message.content
         self.log_chat("Summarizing Observations", [("user", user_message), ("assistant", perception)])
         self.last_perception = perception
-        client.close()
         return perception
-
-
-
