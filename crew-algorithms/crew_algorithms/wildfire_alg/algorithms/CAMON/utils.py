@@ -1,5 +1,4 @@
 import re
-from openai import OpenAI
 from pydantic import BaseModel
 from crew_algorithms.wildfire_alg.algorithms.CAMON.agent import Agent
 
@@ -52,8 +51,8 @@ def translate_action(option_str: str, type: int, global_data: dict) -> Action:
     with open(prompt_path, 'r', encoding='utf-8') as f:
         prompt = f.read().replace("ACTION", option_str)
     # Call OpenAI
-    client = OpenAI(api_key=global_data['leader_agent'].api_key)
-    response = client.chat.completions.create(
+    # client = OpenAI(api_key=global_data['leader_agent'].api_key) # check if need to overwrite with env API key
+    response = openai.Completion.create(
         model='gpt-4o',
         messages=[
             {'role':'system', 'content':system_message},
@@ -188,12 +187,11 @@ def generate_plan(agent: Agent, global_data: dict) -> None:
             <AGENT_A-message>'action'</AGENT_A-message>
             """
     # Call OpenAI
-    client = OpenAI(api_key=agent.api_key)
     system_message = f"""
                     You are AGENT_{agent.id}, currently acting as the leader in a cooperative multi-agent robotic task. Your team is in a  {agent.cfg.envs.map_size} by {agent.cfg.envs.map_size} forest grid world that spans x:[0 to {agent.cfg.envs.map_size}] and y:[0 to {agent.cfg.envs.map_size}].
                     You have access to the collective observations and the progress of all agents. Your job is to plan the next best action for yourself, and OPTIONALLY: the next best action for any other agents."""
     user_message = generate_plan_string
-    response = client.chat.completions.create(
+    response = openai.Completion.create(
         model='gpt-4o',
         messages=[{'role':'system','content':system_message},{'role':'user','content':user_message}],
         temperature=0.7
@@ -310,12 +308,11 @@ def propose_plan(agent: Agent, global_data: dict) -> None:
                     <action>'MY NEXT ACTION'</action>
 
                     """
-    client = OpenAI(api_key=agent.api_key)
     system_msg = f"""
                     You are AGENT_{agent.id}, an embodied {type_string} agent.
                     You propose your next action based on your task, observations, past actions, and chat history.
                     """
-    response = client.chat.completions.create(
+    response = openai.Completion.create(
         model='gpt-4o',
         messages=[{'role':'system','content':system_msg},{'role':'user','content':proposal_str}],
         temperature=0.7
